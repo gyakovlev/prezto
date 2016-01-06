@@ -11,3 +11,40 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+
+# python shit
+alias easy_install="easy_install --user"
+export PIP_REQUIRE_VIRTUALENV=true
+#export PIP_DOWNLOAD_CACHE=~/.pip/cache
+gpip()	{
+	 PIP_REQUIRE_VIRTUALENV="" pip "$@"
+	}
+export PROJECT_HOME=~/Documents/dev/python
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+
+# col/solarize just in case if we use \ls (/bin/ls)
+export CLICOLOR=1
+export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD # Tell ls to be colourful
+export GREP_OPTIONS='--color=auto'
+
+alias zupdate="cd ~/.zprezto && git pull && git submodule update --init --recursive"
+# github gem
+eval "$(hub alias -s)"
+
+# this file contains sensetive stuff and should not be synced to github etc
+source ~/.sensetive
+
+source ~/.zplug/zplug
+
+zplug "b4b4r07/zplug" # manage self
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load # --verbose
