@@ -11,17 +11,23 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-
+zstyle ':completion:*' rehash true
 # python shit
 alias easy_install="easy_install --user"
-export PIP_REQUIRE_VIRTUALENV=true
-#export PIP_DOWNLOAD_CACHE=~/.pip/cache
-gpip()	{
-	 PIP_REQUIRE_VIRTUALENV="" pip "$@"
-	}
+export PIP_REQUIRE_VIRTUALENV=true # this one should be set at ~.pip/pip.conf but...
+gpip()  {
+  PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+gpip-review() {
+  PIP_REQUIRE_VIRTUALENV="" pip-review "$@"
+}
 export PROJECT_HOME=~/Documents/dev/python
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 
+# ruby shit
+# ...
+# go shit
+export GOPATH=~/Documents/dev/go
 # col/solarize just in case if we use \ls (/bin/ls)
 export CLICOLOR=1
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD # Tell ls to be colourful
@@ -33,18 +39,46 @@ eval "$(hub alias -s)"
 
 # this file contains sensetive stuff and should not be synced to github etc
 source ~/.sensetive
+source ~/.iterm2_shell_integration.zsh
 
-source ~/.zplug/zplug
+# aws shit
+source /usr/local/share/zsh/site-functions/_aws
 
-zplug "b4b4r07/zplug" # manage self
+# Check if zplug is installed
+#[[ -d ~/.zplug ]] || {
+#  curl -fLo ~/.zplug/zplug --create-dirs https://git.io/zplug
+#  source ~/.zplug/zplug && zplug update --self
+#}
+#source ~/.zplug/zplug
+#
+#zplug "b4b4r07/zplug" # manage self
+#zplug "djui/alias-tips"
+#zplug "horosgrisa/autoenv"
+#zplug "mgryszko/jvm"
+#zplug "marzocchi/zsh-notify", at:develop
+#zplug "aramboi/zsh-ipfs"
+#zplug "sharat87/pip-app", of:pip-app.sh # doe not check for empty arg
+#zplug "Tarrasch/zsh-autoenv" # this one is rather bloated.
+#zplug "srijanshetty/zsh-pip-completion" # not working on first try
+#zplug "hchbaw/auto-fu.zsh"
+#zplug "rimraf/k" # not solarized =)
+#zplug "the8/zsh-terminal-app" # lots of flickering
+#zplug "tarruda/zsh-autosuggestions"
 
 # Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo; zplug install
-  fi
-fi
+#if ! zplug check --verbose; then
+#  printf "Install? [y/N]: "
+#  if read -q; then
+#    echo; zplug install
+#  fi
+#fi
+#
+## Then, source plugins and add commands to $PATH
+#zplug load # --verbose
 
-# Then, source plugins and add commands to $PATH
-zplug load # --verbose
+# final path modification
+path=(
+  ~/anaconda2/bin
+  ~/bin
+  $path
+)
